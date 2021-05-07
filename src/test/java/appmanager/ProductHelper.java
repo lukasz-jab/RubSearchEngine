@@ -4,7 +4,6 @@ import model.Product;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -28,11 +27,12 @@ public class ProductHelper {
         List<WebElement> webProducts = new ArrayList<>();
         webProducts = wd.findElements(By.cssSelector(("div.product-list-container div.block-product-list")));
         for (WebElement e : webProducts) {
-            String name = e.findElement(By.cssSelector(("div.product-list-container div.block-product-list h2 span"))).getText();
-            String description = e.findElement(By.cssSelector(("div.product-list-container div.block-product-list div.product-description--content p"))).getText();
+            String name = e.findElement(By.cssSelector(("div.block-product-list div.block-product--infos-left a.product-name"))).getAttribute("title");
+            System.out.println(name);
+            //String description = e.findElement(By.cssSelector(("div.product-list-container div.block-product-list div.product-description--content p"))).getText();
             String price = e.findElement(By.cssSelector(("div.product-list-container div.block-product-list div.price.block-price strong"))).getText();
             String id = e.findElement(By.cssSelector("div.product-list-container div.block-product-list div.cart.clearfix input[name=productCodePost]")).getAttribute("value");
-            products.add(new Product().withId(id).withName(name).withDescription(description).withPrice(cleaned(price)));
+            products.add(new Product().withId(id).withName(name).withPrice(cleaned(price)));
         }
         return new HashSet<Product>(products);
     }

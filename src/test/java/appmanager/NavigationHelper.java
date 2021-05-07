@@ -10,8 +10,9 @@ public class NavigationHelper {
         this.wd = wd;
     }
 
-    public void home() {
-        wd.get("https://uk.rubix.com/");
+    public void homeButton() {
+
+        wd.findElement(By.cssSelector("div#nav_main_rx a[title=Home]")).click();
     }
 
     public void openChart() {

@@ -40,7 +40,7 @@ public class ApplicationManager {
         } else {
             System.out.println("Unrecognized browser");
         }
-        wd.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
+        wd.manage().timeouts().implicitlyWait(120, TimeUnit.SECONDS);
         wait = new WebDriverWait(wd, 7);
         wd.manage().window().maximize();
         session = new SessionHelper(wd);
