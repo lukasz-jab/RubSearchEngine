@@ -9,9 +9,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+
 
 public class ProductHelper {
     private WebDriver wd;
@@ -22,9 +21,10 @@ public class ProductHelper {
         this.wait = wait;
     }
 
-    public Set<Product> getProducts() {
+    public List<Product> getProducts() {
         List<Product> products = new ArrayList<>();
         List<WebElement> webProducts = new ArrayList<>();
+        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(("div.product-list-container div.block-product-list"))));
         webProducts = wd.findElements(By.cssSelector(("div.product-list-container div.block-product-list")));
         for (WebElement e : webProducts) {
             String name = e.findElement(By.cssSelector(("div.block-product-list div.block-product--infos-left a.product-name"))).getAttribute("title");
@@ -34,7 +34,7 @@ public class ProductHelper {
             String id = e.findElement(By.cssSelector("div.product-list-container div.block-product-list div.cart.clearfix input[name=productCodePost]")).getAttribute("value");
             products.add(new Product().withId(id).withName(name).withPrice(cleaned(price)));
         }
-        return new HashSet<Product>(products);
+        return products;
     }
 
     public void addToChart(Product product) {
@@ -51,6 +51,16 @@ public class ProductHelper {
 
     public static String cleaned(String price) {
         return price.replaceAll(" ", "").replaceAll("£", "")
-                .replaceAll("ex.VAT", "").replaceAll("Total", "").replaceAll("\\n", "");
+                .replaceAll("ex.VAT", "").replaceAll("Total", "").replaceAll(",", "").replaceAll("\\n", "");
+    }
+
+    public List<Product> getProductsFromCompare() {
+        List<Product> products = new ArrayList<>();
+        List<WebElement> webProducts = wd.findElements(By.cssSelector("table#compare_tab table.nothing a#link_ span"));
+        for (WebElement el : webProducts) {
+            String name = el.getText();
+            products.add(new Product().withName(name));
+        }
+        return products;
     }
 }
